@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 from glob import glob
 
-package_name = 'robotTools'
+package_name = 'robot_tools'
 
 setup(
     name=package_name,
