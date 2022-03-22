@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'diagnostics = diagnostics.diagnostics:main'
+            'diagnostics = diagnostics.diagnostics:main',
+            'limelight_indicator = diagnostics.limelight_indicator:main'
         ],
     },
 )

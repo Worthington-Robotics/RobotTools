@@ -2,6 +2,7 @@ import os
 from pydoc import cli
 import rclpy
 from rclpy.node import Node
+
 from autobt_msgs.srv import StringService
 
 LIMELIGHT_IP = "10.41.45.67"
@@ -13,9 +14,11 @@ def pingLimelight():
 def pingRoboRIO():
     return os.system("ping -c 1 " + roboRIO_IP)
     
-class clientNode(rclpy.Node):
+class clientNode(Node):
     def __init__(self): 
-        client = self.create_client(StringService, "limelight/set_light_state")
+        print("here")
+        client = self.create_client(StringService, "/limelight/set_light_state")
+
         while not self.cli.wait_for_service(timeout_sec=1.0):
             self.get_logger().info('service not available, waiting again...')
             self.req = StringService.Request()
@@ -46,11 +49,12 @@ def limelightOff(args = None):
     
 
 
-def main(args):
-    rclpy.init(args=args)
+def main(args= None):
+    rclpy.init(args = args)
 
     client = clientNode()
-    client.send_request()
+    #client.send_request()
+    print('created client')
 
     limelightWorks = pingLimelight()
     roboRIOWorks = pingRoboRIO()
@@ -59,6 +63,8 @@ def main(args):
         blinkLimelight()
     else :
         limelightOff()
+    
+    rclpy.spin(client)
 
     client.destroy_node()
     rclpy.shutdown()

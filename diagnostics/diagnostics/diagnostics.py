@@ -8,7 +8,6 @@ class CpuTask(diagnostic_updater.DiagnosticTask):
         diagnostic_updater.DiagnosticTask.__init__(self, "CPU Information")
         self._warning_percentage = int(warning_percentage)
 
-
     def run(self, stat):
         cpu_percentages = (psutil.cpu_percent(percpu=True))
         cpu_average = sum(cpu_percentages) / len(cpu_percentages)
@@ -70,7 +69,6 @@ class DiskTask(diagnostic_updater.DiagnosticTask):
             if disk_usage.percent > self._warning_percentage:
                 warn = True
 
-
         if warn:
             stat.summary(DiagnosticStatus.WARN,
                          "Disk usage exceeds {:d} percent".format(self._warning_percentage))
@@ -81,14 +79,16 @@ class DiskTask(diagnostic_updater.DiagnosticTask):
 
 def main():
     rclpy.init()
-    node = rclpy.create_node('computer_monitor')
-    print('Hi from diagnostics.')
+
+    node = rclpy.create_node('cpu_monitor')
+    node.get_logger().info("Initialized CPU monitor node")
 
     updater = diagnostic_updater.Updater(node)
     updater.add(CpuTask(90))
     updater.add(MemoryTask(90))
     updater.add(DiskTask(90))
     updater.force_update()
+
     rclpy.spin(node, None)
 
 
