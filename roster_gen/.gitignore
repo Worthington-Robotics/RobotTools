@@ -1,0 +1,6 @@
+# This pattern will ignore anything in this directory except for files we want
+# So you don't have to worry when putting files here
+/**
+!/.gitignore
+!/generate.py
+!/README.md
